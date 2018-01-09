@@ -35,10 +35,11 @@ public class ABVideoRangeSlider: UIView {
     var startPercentage: CGFloat    = 0         // Represented in percentage
     var endPercentage: CGFloat      = 100       // Represented in percentage
 
-    let topBorderHeight: CGFloat      = 5
-    let bottomBorderHeight: CGFloat   = 5
+    let topBorderHeight: CGFloat      = 0
+    let bottomBorderHeight: CGFloat   = 0
 
-    let indicatorWidth: CGFloat = 20.0
+    let indicatorWidth: CGFloat = 10.0
+    let progressWidth: CGFloat = 10.0
 
     public var minSpace: Float = 1              // In Seconds
     public var maxSpace: Float = 0              // In Seconds
@@ -74,7 +75,7 @@ public class ABVideoRangeSlider: UIView {
 
         startIndicator = ABStartIndicator(frame: CGRect(x: 0,
                                                         y: -topBorderHeight,
-                                                        width: 20,
+                                                        width: indicatorWidth,
                                                         height: self.frame.size.height + bottomBorderHeight + topBorderHeight))
         startIndicator.layer.anchorPoint = CGPoint(x: 1, y: 0.5)
         startIndicator.addGestureRecognizer(startDrag)
@@ -120,7 +121,7 @@ public class ABVideoRangeSlider: UIView {
 
         progressIndicator = ABProgressIndicator(frame: CGRect(x: 0,
                                                               y: -topBorderHeight,
-                                                              width: 10,
+                                                              width: progressWidth,
                                                               height: self.frame.size.height + bottomBorderHeight + topBorderHeight))
         progressIndicator.addGestureRecognizer(progressDrag)
         self.addSubview(progressIndicator)
@@ -232,6 +233,7 @@ public class ABVideoRangeSlider: UIView {
         self.endPercentage = self.valueFromSeconds(seconds: seconds)
         layoutSubviews()
     }
+    
 
     // MARK: Private functions
 
