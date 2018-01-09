@@ -11,6 +11,7 @@ import UIKit
 public protocol ABVideoRangeSliderDelegate: class {
     func didChangeValue(videoRangeSlider: ABVideoRangeSlider, startTime: Float64, endTime: Float64)
     func indicatorDidChangePosition(videoRangeSlider: ABVideoRangeSlider, position: Float64)
+    func indicatorDidFinishChangePosition(videoRangeSlider: ABVideoRangeSlider, position: Float64)
 }
 
 public class ABVideoRangeSlider: UIView {
@@ -245,11 +246,17 @@ public class ABVideoRangeSlider: UIView {
     }
 
     func startDragged(recognizer: UIPanGestureRecognizer){
-        startTimeView.alpha = 1
-        UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseOut, animations: {
-            self.startTimeView.alpha = 0
-        }) { complete in
-            self.startTimeView.alpha = complete ? 0 : 1
+        switch recognizer.state {
+        case .began, .changed:
+            startTimeView.alpha = 1
+        case .ended, .cancelled:
+            UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseOut, animations: {
+                self.startTimeView.alpha = 0
+            }) { complete in
+                self.startTimeView.alpha = complete ? 0 : 1
+            }
+        default:
+            break
         }
         
         let translation = recognizer.translation(in: self)
@@ -313,11 +320,17 @@ public class ABVideoRangeSlider: UIView {
 
 
     func endDragged(recognizer: UIPanGestureRecognizer){
-        endTimeView.alpha = 1
-        UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseOut, animations: {
-            self.endTimeView.alpha = 0
-        }) { complete in
-            self.endTimeView.alpha = complete ? 0 : 1
+        switch recognizer.state {
+        case .began, .changed:
+            endTimeView.alpha = 1
+        case .ended, .cancelled:
+            UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseOut, animations: {
+                self.endTimeView.alpha = 0
+            }) { complete in
+                self.endTimeView.alpha = complete ? 0 : 1
+            }
+        default:
+            break
         }
         
         let translation = recognizer.translation(in: self)
@@ -379,6 +392,7 @@ public class ABVideoRangeSlider: UIView {
     }
 
     func progressDragged(recognizer: UIPanGestureRecognizer){
+        
         let translation = recognizer.translation(in: self)
 
         let positionLimitStart  = positionFromValue(value: self.startPercentage)
@@ -403,23 +417,37 @@ public class ABVideoRangeSlider: UIView {
 
         let progressSeconds = secondsFromValue(value: progressPercentage)
 
-        self.delegate?.indicatorDidChangePosition(videoRangeSlider: self, position: progressSeconds)
-
+        switch recognizer.state {
+        case .began, .changed:
+            self.delegate?.indicatorDidChangePosition(videoRangeSlider: self, position: progressSeconds)
+        case .ended, .cancelled:
+            self.delegate?.indicatorDidFinishChangePosition(videoRangeSlider: self, position: progressSeconds)
+        default:
+            break
+        }
+        
         self.progressPercentage = percentage
 
         layoutSubviews()
     }
 
     func viewDragged(recognizer: UIPanGestureRecognizer){
-        startTimeView.alpha = 1
-        endTimeView.alpha = 1
-        UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseOut, animations: {
-            self.startTimeView.alpha = 0
-            self.endTimeView.alpha = 0
-        }) { complete in
-            self.startTimeView.alpha = complete ? 0 : 1
-            self.endTimeView.alpha = complete ? 0 : 1
+        switch recognizer.state {
+        case .began, .changed:
+            startTimeView.alpha = 1
+            endTimeView.alpha = 1
+        case .ended, .cancelled:
+            UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseOut, animations: {
+                self.startTimeView.alpha = 0
+                self.endTimeView.alpha = 0
+            }) { complete in
+                self.startTimeView.alpha = complete ? 0 : 1
+                self.endTimeView.alpha = complete ? 0 : 1
+            }
+        default:
+            break
         }
+
         let translation = recognizer.translation(in: self)
 
         var progressPosition = positionFromValue(value: self.progressPercentage)

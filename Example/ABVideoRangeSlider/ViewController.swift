@@ -92,4 +92,7 @@ class ViewController: UIViewController, ABVideoRangeSliderDelegate {
         print("position of indicator: \(position)")
     }
 
+    func indicatorDidFinishChangePosition(videoRangeSlider: ABVideoRangeSlider, position: Float64) {
+        print("finish change indicator: \(position)")
+    }
 }
