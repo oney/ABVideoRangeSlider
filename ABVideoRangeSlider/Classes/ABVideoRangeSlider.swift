@@ -38,7 +38,7 @@ public class ABVideoRangeSlider: UIView {
     let topBorderHeight: CGFloat      = 0
     let bottomBorderHeight: CGFloat   = 0
 
-    let indicatorWidth: CGFloat = 10.0
+    let indicatorWidth: CGFloat = 20.0
     let progressWidth: CGFloat = 10.0
 
     public var minSpace: Float = 1              // In Seconds
@@ -140,10 +140,12 @@ public class ABVideoRangeSlider: UIView {
 
         startTimeView = ABTimeView(size: CGSize(width: 60, height: 30), position: 1)
         startTimeView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        startTimeView.alpha = 0
         self.addSubview(startTimeView)
 
         endTimeView = ABTimeView(size: CGSize(width: 60, height: 30), position: 1)
         endTimeView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        endTimeView.alpha = 0
         self.addSubview(endTimeView)
     }
 
@@ -243,6 +245,13 @@ public class ABVideoRangeSlider: UIView {
     }
 
     func startDragged(recognizer: UIPanGestureRecognizer){
+        startTimeView.alpha = 1
+        UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseOut, animations: {
+            self.startTimeView.alpha = 0
+        }) { complete in
+            self.startTimeView.alpha = complete ? 0 : 1
+        }
+        
         let translation = recognizer.translation(in: self)
 
         var progressPosition = positionFromValue(value: self.progressPercentage)
@@ -304,6 +313,13 @@ public class ABVideoRangeSlider: UIView {
 
 
     func endDragged(recognizer: UIPanGestureRecognizer){
+        endTimeView.alpha = 1
+        UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseOut, animations: {
+            self.endTimeView.alpha = 0
+        }) { complete in
+            self.endTimeView.alpha = complete ? 0 : 1
+        }
+        
         let translation = recognizer.translation(in: self)
 
         var progressPosition = positionFromValue(value: self.progressPercentage)
@@ -395,6 +411,15 @@ public class ABVideoRangeSlider: UIView {
     }
 
     func viewDragged(recognizer: UIPanGestureRecognizer){
+        startTimeView.alpha = 1
+        endTimeView.alpha = 1
+        UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseOut, animations: {
+            self.startTimeView.alpha = 0
+            self.endTimeView.alpha = 0
+        }) { complete in
+            self.startTimeView.alpha = complete ? 0 : 1
+            self.endTimeView.alpha = complete ? 0 : 1
+        }
         let translation = recognizer.translation(in: self)
 
         var progressPosition = positionFromValue(value: self.progressPercentage)

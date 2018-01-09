@@ -46,7 +46,11 @@ open class ABTimeView: UIView {
         
         // Add Background View
         self.backgroundView.frame = self.bounds
-        self.backgroundView.backgroundColor = UIColor.yellow
+        self.backgroundView.backgroundColor = .black
+        self.backgroundView.alpha = 0.5
+        self.backgroundView.layer.borderColor = UIColor.black.cgColor
+        self.backgroundView.layer.borderWidth = 1.0
+        self.backgroundView.layer.cornerRadius = 8.0
         self.addSubview(self.backgroundView)
         
         // Add time label
