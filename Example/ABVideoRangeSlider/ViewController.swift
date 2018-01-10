@@ -88,6 +88,11 @@ class ViewController: UIViewController, ABVideoRangeSliderDelegate {
         lblEnd.text = "\(endTime)"
     }
     
+    func didFinishChangeValue(videoRangeSlider: ABVideoRangeSlider, startTime: Float64, endTime: Float64) {
+        lblStart.text = "\(startTime)"
+        lblEnd.text = "\(endTime)"
+        print("FinishChange startTime: \(startTime), endTime: \(endTime)")
+    }
     func indicatorDidChangePosition(videoRangeSlider: ABVideoRangeSlider, position: Float64) {
         print("position of indicator: \(position)")
     }
