@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -83,6 +83,18 @@
                                     <constraint firstAttribute="height" constant="40" id="FgH-4C-ZDG"/>
                                 </constraints>
                             </view>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b2f-Lc-KAG">
+                                <rect key="frame" x="310" y="361" width="51" height="31"/>
+                                <connections>
+                                    <action selector="toggleShouldUpdateValue:" destination="vXZ-lx-hvc" eventType="valueChanged" id="9L4-tD-gdt"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="shouldUpdateValue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Rc-nR-nNl">
+                                <rect key="frame" x="16" y="366" width="149" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -93,7 +105,9 @@
                             <constraint firstItem="adA-VI-bql" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="Kui-E5-G8D"/>
                             <constraint firstItem="guw-eu-ThB" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="LaK-Xp-Kjx"/>
                             <constraint firstItem="uFM-Pa-8Nr" firstAttribute="centerY" secondItem="adA-VI-bql" secondAttribute="centerY" id="S7b-52-I8h"/>
+                            <constraint firstItem="5Rc-nR-nNl" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="VFp-Mq-nnh"/>
                             <constraint firstAttribute="trailing" secondItem="FS1-Uc-QNj" secondAttribute="trailing" constant="16" id="Z6f-3K-M7N"/>
+                            <constraint firstItem="b2f-Lc-KAG" firstAttribute="centerY" secondItem="5Rc-nR-nNl" secondAttribute="centerY" id="aB5-j3-hYl"/>
                             <constraint firstItem="FS1-Uc-QNj" firstAttribute="centerY" secondItem="BBp-dv-DFH" secondAttribute="centerY" id="drJ-Wz-srw"/>
                             <constraint firstItem="BBp-dv-DFH" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="e6o-Gm-ioe"/>
                             <constraint firstItem="xXz-O0-35H" firstAttribute="top" secondItem="guw-eu-ThB" secondAttribute="bottom" constant="25" id="gsM-po-eeA"/>
@@ -102,8 +116,10 @@
                             <constraint firstItem="c3F-DQ-vEz" firstAttribute="top" secondItem="xXz-O0-35H" secondAttribute="bottom" constant="35" id="lYq-Dg-TgC"/>
                             <constraint firstAttribute="trailing" secondItem="guw-eu-ThB" secondAttribute="trailing" constant="16" id="mop-Le-rRa"/>
                             <constraint firstItem="BBp-dv-DFH" firstAttribute="top" secondItem="c3F-DQ-vEz" secondAttribute="bottom" constant="25" id="okj-GM-Ztp"/>
+                            <constraint firstItem="5Rc-nR-nNl" firstAttribute="top" secondItem="adA-VI-bql" secondAttribute="bottom" constant="25" id="rug-3L-yFb"/>
                             <constraint firstItem="xOY-0j-fae" firstAttribute="centerY" secondItem="c3F-DQ-vEz" secondAttribute="centerY" id="u6Y-bh-ZOx"/>
                             <constraint firstAttribute="trailing" secondItem="uFM-Pa-8Nr" secondAttribute="trailing" constant="16" id="y32-VT-AaH"/>
+                            <constraint firstItem="b2f-Lc-KAG" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailing" constant="-16" id="zxV-b1-sDT"/>
                         </constraints>
                     </view>
                     <connections>
@@ -111,6 +127,7 @@
                         <outlet property="lblMinSpace" destination="uFM-Pa-8Nr" id="MK6-aY-7XI"/>
                         <outlet property="lblStart" destination="xOY-0j-fae" id="U7l-pv-ng0"/>
                         <outlet property="playerView" destination="guw-eu-ThB" id="4My-Gp-E6C"/>
+                        <outlet property="shouUpdateValueSwitch" destination="b2f-Lc-KAG" id="Sgf-y6-NTj"/>
                         <outlet property="videoRangeSlider" destination="xXz-O0-35H" id="vaP-NF-Jgt"/>
                     </connections>
                 </viewController>

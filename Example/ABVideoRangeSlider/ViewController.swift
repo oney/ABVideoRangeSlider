@@ -18,6 +18,8 @@ class ViewController: UIViewController, ABVideoRangeSliderDelegate {
     @IBOutlet var lblStart: UILabel!
     @IBOutlet var lblEnd: UILabel!
     @IBOutlet var lblMinSpace: UILabel!
+    @IBOutlet var shouUpdateValueSwitch: UISwitch!
+
     
     let path = Bundle.main.path(forResource: "test", ofType:"mp4")
     
@@ -25,6 +27,10 @@ class ViewController: UIViewController, ABVideoRangeSliderDelegate {
         super.viewDidLoad()
     }
 
+    @IBAction func toggleShouldUpdateValue(_ sender: Any) {
+        videoRangeSlider.shouldUpdateValue = shouUpdateValueSwitch.isOn
+    }
+    
     @IBAction func playVideo(_ sender: Any) {
         let player = AVPlayer(url: URL(fileURLWithPath: path!))
         let playerViewController = AVPlayerViewController()

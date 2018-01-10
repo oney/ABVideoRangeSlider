@@ -47,6 +47,7 @@ public class ABVideoRangeSlider: UIView {
     public var maxSpace: Float = 0              // In Seconds
 
     var isUpdatingThumbnails = false
+    public var shouldUpdateValue = true
 
     public enum ABTimeViewPosition{
         case top
@@ -81,6 +82,7 @@ public class ABVideoRangeSlider: UIView {
                                                         height: self.frame.size.height + bottomBorderHeight + topBorderHeight))
         startIndicator.layer.anchorPoint = CGPoint(x: 1, y: 0.5)
         startIndicator.addGestureRecognizer(startDrag)
+        startDrag.delegate = self
         self.addSubview(startIndicator)
 
         // Setup End Indicator
@@ -94,6 +96,7 @@ public class ABVideoRangeSlider: UIView {
                                                     height: self.frame.size.height + bottomBorderHeight + topBorderHeight))
         endIndicator.layer.anchorPoint = CGPoint(x: 0, y: 0.5)
         endIndicator.addGestureRecognizer(endDrag)
+        endDrag.delegate = self
         self.addSubview(endIndicator)
 
 
@@ -134,6 +137,7 @@ public class ABVideoRangeSlider: UIView {
                                               action: #selector(viewDragged(recognizer:)))
 
         draggableView.addGestureRecognizer(viewDrag)
+        viewDrag.delegate = self
         self.draggableView.backgroundColor = .clear
         self.addSubview(draggableView)
         self.sendSubview(toBack: draggableView)
@@ -570,5 +574,16 @@ public class ABVideoRangeSlider: UIView {
 
     deinit {
       removeObserver(self, forKeyPath: "bounds")
+    }
+}
+
+extension ABVideoRangeSlider : UIGestureRecognizerDelegate {
+    public override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.view == startIndicator ||
+            gestureRecognizer.view == endIndicator ||
+            gestureRecognizer.view == draggableView {
+            return shouldUpdateValue
+        }
+        return super.gestureRecognizerShouldBegin(gestureRecognizer)
     }
 }
