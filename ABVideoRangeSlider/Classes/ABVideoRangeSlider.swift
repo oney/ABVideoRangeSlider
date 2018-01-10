@@ -304,11 +304,11 @@ public class ABVideoRangeSlider: UIView {
             self.delegate?.didChangeValue(videoRangeSlider: self, startTime: startSeconds, endTime: endSeconds)
         case .ended, .cancelled:
             self.delegate?.didFinishChangeValue(videoRangeSlider: self, startTime: startSeconds, endTime: endSeconds)
-            UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.3, animations: {
                 self.startTimeView.alpha = 0
-            }) { complete in
-                self.startTimeView.alpha = complete ? 0 : 1
-            }
+            }, completion: { _ in
+                self.startTimeView.alpha = 0
+            })
         default:
             break
         }
@@ -379,11 +379,11 @@ public class ABVideoRangeSlider: UIView {
             self.delegate?.didChangeValue(videoRangeSlider: self, startTime: startSeconds, endTime: endSeconds)
         case .ended, .cancelled:
             self.delegate?.didFinishChangeValue(videoRangeSlider: self, startTime: startSeconds, endTime: endSeconds)
-            UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.3, animations: {
                 self.endTimeView.alpha = 0
-            }) { complete in
-                self.endTimeView.alpha = complete ? 0 : 1
-            }
+            }, completion: { _ in
+                self.endTimeView.alpha = 0
+            })
         default:
             break
         }
@@ -483,13 +483,13 @@ public class ABVideoRangeSlider: UIView {
             self.delegate?.didChangeValue(videoRangeSlider: self, startTime: startSeconds, endTime: endSeconds)
         case .ended, .cancelled:
             self.delegate?.didFinishChangeValue(videoRangeSlider: self, startTime: startSeconds, endTime: endSeconds)
-            UIView.animate(withDuration: 0.3, delay: 1, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.3, animations: {
                 self.startTimeView.alpha = 0
                 self.endTimeView.alpha = 0
-            }) { complete in
-                self.startTimeView.alpha = complete ? 0 : 1
-                self.endTimeView.alpha = complete ? 0 : 1
-            }
+            }, completion: { _ in
+                self.startTimeView.alpha = 0
+                self.endTimeView.alpha = 0
+            })
         default:
             break
         }
