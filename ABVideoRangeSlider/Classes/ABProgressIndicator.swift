@@ -16,9 +16,9 @@ class ABProgressIndicator: UIView {
         super.init(frame: frame)
         
         let bundle = Bundle(for: ABStartIndicator.self)
-        let image = UIImage(named: "ProgressIndicator", in: bundle, compatibleWith: nil)
+//        let image = UIImage(named: "ProgressIndicator", in: bundle, compatibleWith: nil)
         imageView.frame = self.bounds
-        imageView.image = image
+//        imageView.image = image
         imageView.contentMode = UIViewContentMode.scaleToFill
         self.addSubview(imageView)
     }
@@ -29,7 +29,21 @@ class ABProgressIndicator: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        imageView.frame = self.bounds
+        
+        adjustAlignment()
+    }
+    
+    func adjustAlignment() {
+        if let size = imageView.image?.size, size.width != 0 {
+            imageView.backgroundColor = UIColor.clear
+            let ratio = size.width/size.height
+            let width = self.bounds.height * ratio
+            let inset = (self.bounds.width - width) / 2
+            imageView.frame = CGRect(x: inset, y: 0, width: width, height: self.frame.height)
+        } else {
+            imageView.backgroundColor = imageView.tintColor
+            imageView.frame = CGRect(x: self.bounds.midX - 1, y: 0, width: 2, height: self.bounds.height)
+        }
     }
 
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
@@ -43,4 +57,6 @@ class ABProgressIndicator: UIView {
             return nil
         }
     }
+    
+
 }

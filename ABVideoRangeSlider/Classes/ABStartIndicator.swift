@@ -28,5 +28,19 @@ class ABStartIndicator: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        adjustAlignment()
+    }
+    
+    func adjustAlignment() {
+        if let size = imageView.image?.size, size.width != 0 {
+            let ratio = size.width/size.height
+            let width = self.bounds.height * ratio
+            let inset = self.bounds.width - width
+            imageView.frame = CGRect(x: inset, y: 0, width: width, height: self.bounds.height)
+        }
+    }
 
 }

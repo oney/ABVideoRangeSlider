@@ -39,8 +39,8 @@ public class ABVideoRangeSlider: UIView {
     var startPercentage: CGFloat    = 0         // Represented in percentage
     var endPercentage: CGFloat      = 100       // Represented in percentage
 
-    var topBorderHeight: CGFloat      = 5
-    var bottomBorderHeight: CGFloat   = 5
+    var topBorderHeight: CGFloat      = 0
+    var bottomBorderHeight: CGFloat   = 0
 
     let indicatorWidth: CGFloat = 20.0
     let progressWidth: CGFloat = 10.0
@@ -173,10 +173,14 @@ public class ABVideoRangeSlider: UIView {
 
     // MARK: Public functions
 
-    public func setProgressIndicatorImage(image: UIImage){
+    public func setProgressIndicatorImage(image: UIImage?){
         self.progressIndicator.imageView.image = image
     }
 
+    public func setProgressTintColor(color: UIColor){
+        self.progressIndicator.imageView.tintColor = color
+    }
+    
     public func hideProgressIndicator(){
         self.progressIndicator.isHidden = true
     }
@@ -190,17 +194,24 @@ public class ABVideoRangeSlider: UIView {
         layoutSubviews()
     }
 
-    public func setStartIndicatorImage(image: UIImage){
+    public func setStartIndicatorImage(image: UIImage?){
         self.startIndicator.imageView.image = image
     }
 
-    public func setEndIndicatorImage(image: UIImage){
+    public func setEndIndicatorImage(image: UIImage?){
         self.endIndicator.imageView.image = image
     }
 
-    public func setBorderImage(image: UIImage){
+    public func setBorderImage(image: UIImage?){
         self.topLine.imageView.image = image
         self.bottomLine.imageView.image = image
+    }
+    
+    public func setRangeTintColor(color:UIColor) {
+        self.startIndicator.imageView.tintColor = color
+        self.endIndicator.imageView.tintColor = color
+        self.topLine.imageView.tintColor = color
+        self.bottomLine.imageView.tintColor = color
     }
     
     public func hideRangeIndicator(){

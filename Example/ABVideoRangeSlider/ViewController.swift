@@ -25,6 +25,7 @@ class ViewController: UIViewController, ABVideoRangeSliderDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
 
     @IBAction func toggleShouldUpdateValue(_ sender: Any) {
@@ -62,6 +63,10 @@ class ViewController: UIViewController, ABVideoRangeSliderDelegate {
         // Set initial position of End Indicator
         videoRangeSlider.setEndPosition(seconds: 150.0)
         
+        videoRangeSlider.setStartIndicatorImage(image: UIImage(named: "editLeft")!)
+        videoRangeSlider.setEndIndicatorImage(image: UIImage(named: "editRight")!)
+        videoRangeSlider.setProgressTintColor(color: .white)
+
         /* Uncomment to customize the Video Range Slider */
 /*
         let customStartIndicator =  UIImage(named: "CustomStartIndicator")

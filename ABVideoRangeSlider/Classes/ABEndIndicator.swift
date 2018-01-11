@@ -29,4 +29,16 @@ class ABEndIndicator: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        adjustAlignment()
+    }
+    
+    func adjustAlignment() {
+        if let size = imageView.image?.size, size.width != 0 {
+            let ratio = size.width/size.height
+            let width = self.bounds.height * ratio
+            imageView.frame = CGRect(x: 0, y: 0, width: width, height: self.frame.height)
+        }
+    }
 }
