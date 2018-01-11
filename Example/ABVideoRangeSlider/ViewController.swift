@@ -18,8 +18,8 @@ class ViewController: UIViewController, ABVideoRangeSliderDelegate {
     @IBOutlet var lblStart: UILabel!
     @IBOutlet var lblEnd: UILabel!
     @IBOutlet var lblMinSpace: UILabel!
-    @IBOutlet var shouUpdateValueSwitch: UISwitch!
-
+    @IBOutlet var shouldUpdateValueSwitch: UISwitch!
+    @IBOutlet var showRangeSwitch: UISwitch!
     
     let path = Bundle.main.path(forResource: "test", ofType:"mp4")
     
@@ -28,7 +28,15 @@ class ViewController: UIViewController, ABVideoRangeSliderDelegate {
     }
 
     @IBAction func toggleShouldUpdateValue(_ sender: Any) {
-        videoRangeSlider.shouldUpdateValue = shouUpdateValueSwitch.isOn
+        videoRangeSlider.shouldUpdateValue = shouldUpdateValueSwitch.isOn
+    }
+    
+    @IBAction func toggleShowRange(_ sender: Any) {
+        if showRangeSwitch.isOn {
+            videoRangeSlider.showRangeIndicator()
+        } else {
+            videoRangeSlider.hideRangeIndicator()
+        }
     }
     
     @IBAction func playVideo(_ sender: Any) {

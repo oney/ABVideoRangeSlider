@@ -39,8 +39,8 @@ public class ABVideoRangeSlider: UIView {
     var startPercentage: CGFloat    = 0         // Represented in percentage
     var endPercentage: CGFloat      = 100       // Represented in percentage
 
-    let topBorderHeight: CGFloat      = 5
-    let bottomBorderHeight: CGFloat   = 5
+    var topBorderHeight: CGFloat      = 5
+    var bottomBorderHeight: CGFloat   = 5
 
     let indicatorWidth: CGFloat = 20.0
     let progressWidth: CGFloat = 10.0
@@ -201,6 +201,20 @@ public class ABVideoRangeSlider: UIView {
     public func setBorderImage(image: UIImage){
         self.topLine.imageView.image = image
         self.bottomLine.imageView.image = image
+    }
+    
+    public func hideRangeIndicator(){
+        self.startIndicator.isHidden = true
+        self.endIndicator.isHidden = true
+        self.topLine.isHidden = true
+        self.bottomLine.isHidden = true
+    }
+    
+    public func showRangeIndicator(){
+        self.startIndicator.isHidden = false
+        self.endIndicator.isHidden = false
+        self.topLine.isHidden = false
+        self.bottomLine.isHidden = false
     }
 
     public func setTimeView(view: ABTimeView){
@@ -551,14 +565,20 @@ public class ABVideoRangeSlider: UIView {
                                      height: self.frame.height)
 
 
-        topLine.frame = CGRect(x: startIndicator.frame.origin.x + startIndicator.frame.width,
+        topLine.frame = CGRect(x: startIndicator.frame.origin.x +
+                                  startIndicator.frame.width,
                                y: -topBorderHeight,
-                               width: endIndicator.frame.origin.x - startIndicator.frame.origin.x - endIndicator.frame.size.width,
+                               width: endIndicator.frame.origin.x -
+                                      startIndicator.frame.origin.x -
+                                      endIndicator.frame.size.width,
                                height: topBorderHeight)
 
-        bottomLine.frame = CGRect(x: startIndicator.frame.origin.x + startIndicator.frame.width,
+        bottomLine.frame = CGRect(x: startIndicator.frame.origin.x +
+            startIndicator.frame.width,
                                   y: self.frame.size.height,
-                                  width: endIndicator.frame.origin.x - startIndicator.frame.origin.x - endIndicator.frame.size.width,
+                                  width: endIndicator.frame.origin.x -
+                                         startIndicator.frame.origin.x -
+                                         endIndicator.frame.size.width,
                                   height: bottomBorderHeight)
 
         leftDimView.frame = CGRect(x: 0,

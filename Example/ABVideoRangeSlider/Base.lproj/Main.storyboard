@@ -95,13 +95,29 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="showRange" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rq0-aq-Dld">
+                                <rect key="frame" x="16" y="412" width="89" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dYr-jb-AYe">
+                                <rect key="frame" x="310" y="407" width="51" height="31"/>
+                                <connections>
+                                    <action selector="toggleShouldUpdateValue:" destination="vXZ-lx-hvc" eventType="valueChanged" id="QcG-VC-Bav"/>
+                                    <action selector="toggleShowRange:" destination="vXZ-lx-hvc" eventType="valueChanged" id="4Sg-vi-3Hc"/>
+                                </connections>
+                            </switch>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="c3F-DQ-vEz" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="0GJ-Ao-hh6"/>
                             <constraint firstItem="xXz-O0-35H" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="24" id="18c-v3-enh"/>
+                            <constraint firstItem="dYr-jb-AYe" firstAttribute="trailing" secondItem="b2f-Lc-KAG" secondAttribute="trailing" id="4gf-kR-fmi"/>
                             <constraint firstAttribute="trailing" secondItem="xXz-O0-35H" secondAttribute="trailing" constant="24" id="54G-w6-10V"/>
+                            <constraint firstItem="Rq0-aq-Dld" firstAttribute="top" secondItem="5Rc-nR-nNl" secondAttribute="bottom" constant="25" id="FnX-tr-j9w"/>
                             <constraint firstAttribute="trailing" secondItem="xOY-0j-fae" secondAttribute="trailing" constant="16" id="IbF-F6-M5q"/>
+                            <constraint firstItem="dYr-jb-AYe" firstAttribute="centerY" secondItem="Rq0-aq-Dld" secondAttribute="centerY" id="IfY-XI-5Fs"/>
                             <constraint firstItem="adA-VI-bql" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="Kui-E5-G8D"/>
                             <constraint firstItem="guw-eu-ThB" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="LaK-Xp-Kjx"/>
                             <constraint firstItem="uFM-Pa-8Nr" firstAttribute="centerY" secondItem="adA-VI-bql" secondAttribute="centerY" id="S7b-52-I8h"/>
@@ -113,6 +129,7 @@
                             <constraint firstItem="xXz-O0-35H" firstAttribute="top" secondItem="guw-eu-ThB" secondAttribute="bottom" constant="25" id="gsM-po-eeA"/>
                             <constraint firstItem="guw-eu-ThB" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" id="hPt-pn-oXe"/>
                             <constraint firstItem="adA-VI-bql" firstAttribute="top" secondItem="BBp-dv-DFH" secondAttribute="bottom" constant="25" id="iuj-2k-PNC"/>
+                            <constraint firstItem="Rq0-aq-Dld" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="j9P-vV-s6a"/>
                             <constraint firstItem="c3F-DQ-vEz" firstAttribute="top" secondItem="xXz-O0-35H" secondAttribute="bottom" constant="35" id="lYq-Dg-TgC"/>
                             <constraint firstAttribute="trailing" secondItem="guw-eu-ThB" secondAttribute="trailing" constant="16" id="mop-Le-rRa"/>
                             <constraint firstItem="BBp-dv-DFH" firstAttribute="top" secondItem="c3F-DQ-vEz" secondAttribute="bottom" constant="25" id="okj-GM-Ztp"/>
@@ -127,7 +144,8 @@
                         <outlet property="lblMinSpace" destination="uFM-Pa-8Nr" id="MK6-aY-7XI"/>
                         <outlet property="lblStart" destination="xOY-0j-fae" id="U7l-pv-ng0"/>
                         <outlet property="playerView" destination="guw-eu-ThB" id="4My-Gp-E6C"/>
-                        <outlet property="shouUpdateValueSwitch" destination="b2f-Lc-KAG" id="Sgf-y6-NTj"/>
+                        <outlet property="shouldUpdateValueSwitch" destination="b2f-Lc-KAG" id="noC-Jh-H1A"/>
+                        <outlet property="showRangeSwitch" destination="dYr-jb-AYe" id="8Bu-kb-TYl"/>
                         <outlet property="videoRangeSlider" destination="xXz-O0-35H" id="vaP-NF-Jgt"/>
                     </connections>
                 </viewController>
