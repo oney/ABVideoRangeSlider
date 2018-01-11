@@ -25,6 +25,8 @@ public class ABVideoRangeSlider: UIView {
     var bottomLine          = ABBorder()
     var progressIndicator   = ABProgressIndicator()
     var draggableView       = UIView()
+    var leftDimView         = ABDimView()
+    var rightDimView        = ABDimView()
 
     public var startTimeView       = ABTimeView()
     public var endTimeView         = ABTimeView()
@@ -37,8 +39,8 @@ public class ABVideoRangeSlider: UIView {
     var startPercentage: CGFloat    = 0         // Represented in percentage
     var endPercentage: CGFloat      = 100       // Represented in percentage
 
-    let topBorderHeight: CGFloat      = 0
-    let bottomBorderHeight: CGFloat   = 0
+    let topBorderHeight: CGFloat      = 5
+    let bottomBorderHeight: CGFloat   = 5
 
     let indicatorWidth: CGFloat = 20.0
     let progressWidth: CGFloat = 10.0
@@ -71,6 +73,14 @@ public class ABVideoRangeSlider: UIView {
     private func setup(){
         self.isUserInteractionEnabled = true
 
+        // Setup left DimView
+        leftDimView = ABDimView(frame: CGRect(x: 0, y: 0, width: 0, height: self.frame.size.height))
+        self.addSubview(leftDimView)
+        
+        // Setup riht DimView
+        rightDimView = ABDimView(frame: CGRect(x: 0, y: 0, width: 0, height: self.frame.size.height))
+        self.addSubview(rightDimView)
+        
         // Setup Start Indicator
 
         let startDrag = UIPanGestureRecognizer(target:self,
@@ -196,6 +206,11 @@ public class ABVideoRangeSlider: UIView {
     public func setTimeView(view: ABTimeView){
         self.startTimeView = view
         self.endTimeView = view
+    }
+    
+    public func setDimColor(color: UIColor){
+        self.leftDimView.backgroundColor = color
+        self.rightDimView.backgroundColor = color
     }
 
     public func setTimeViewPosition(position: ABTimeViewPosition){
@@ -529,6 +544,7 @@ public class ABVideoRangeSlider: UIView {
         startIndicator.center = CGPoint(x: startPosition, y: startIndicator.center.y)
         endIndicator.center = CGPoint(x: endPosition, y: endIndicator.center.y)
         progressIndicator.center = CGPoint(x: progressPosition, y: progressIndicator.center.y)
+        
         draggableView.frame = CGRect(x: startIndicator.frame.origin.x + startIndicator.frame.size.width,
                                      y: 0,
                                      width: endIndicator.frame.origin.x - startIndicator.frame.origin.x - endIndicator.frame.size.width,
@@ -545,6 +561,16 @@ public class ABVideoRangeSlider: UIView {
                                   width: endIndicator.frame.origin.x - startIndicator.frame.origin.x - endIndicator.frame.size.width,
                                   height: bottomBorderHeight)
 
+        leftDimView.frame = CGRect(x: 0,
+                                   y: 0,
+                                   width: startIndicator.frame.origin.x + startIndicator.frame.size.width,
+                                   height: self.frame.height)
+        
+        rightDimView.frame = CGRect(x: endIndicator.frame.origin.x,
+                                   y: 0,
+                                   width: self.frame.width - endIndicator.frame.origin.x,
+                                   height: self.frame.height)
+        
         // Update time view
         startTimeView.center = CGPoint(x: startIndicator.center.x, y: startTimeView.center.y)
         endTimeView.center = CGPoint(x: endIndicator.center.x, y: endTimeView.center.y)
