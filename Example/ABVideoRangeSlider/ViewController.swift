@@ -83,7 +83,7 @@ class ViewController: UIViewController, ABVideoRangeSliderDelegate {
 */
 
         
-      
+        
         // Customize starTimeView
         let customView = UIView(frame: CGRect(x: 0,
                                               y: 0,

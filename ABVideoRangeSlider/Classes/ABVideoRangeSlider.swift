@@ -148,18 +148,26 @@ public class ABVideoRangeSlider: UIView {
 
         draggableView.addGestureRecognizer(viewDrag)
         viewDrag.delegate = self
+        
+        let viewTap = UITapGestureRecognizer(target:self,
+                                             action: #selector(viewTapped(recognizer:)))
+        draggableView.addGestureRecognizer(viewTap)
+        viewTap.delegate = self
+        
         self.draggableView.backgroundColor = .clear
         self.addSubview(draggableView)
         self.sendSubview(toBack: draggableView)
 
         // Setup time labels
 
-        startTimeView = ABTimeView(size: CGSize(width: 60, height: 30), position: 1)
+        startTimeView = ABTimeView(size: CGSize(width: 60, height: 30),
+                                   position: 1)
         startTimeView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         startTimeView.alpha = 0
         self.addSubview(startTimeView)
 
-        endTimeView = ABTimeView(size: CGSize(width: 60, height: 30), position: 1)
+        endTimeView = ABTimeView(size: CGSize(width: 60, height: 30),
+                                 position: 1)
         endTimeView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         endTimeView.alpha = 0
         self.addSubview(endTimeView)
@@ -298,7 +306,7 @@ public class ABVideoRangeSlider: UIView {
         var position = positionFromValue(value: self.startPercentage)
         position = position + translation.x
 
-        if position < 0{
+        if position < 0 {
             position = 0
         }
 
@@ -314,7 +322,7 @@ public class ABVideoRangeSlider: UIView {
 
         if Float(self.duration) < self.minSpace {
             position = 0
-        }else{
+        } else {
             if position > positionLimit {
                 position = positionLimit
             }
@@ -341,9 +349,13 @@ public class ABVideoRangeSlider: UIView {
         switch recognizer.state {
         case .began, .changed:
             startTimeView.alpha = 1
-            self.delegate?.didChangeValue(videoRangeSlider: self, startTime: startSeconds, endTime: endSeconds)
+            self.delegate?.didChangeValue(videoRangeSlider: self,
+                                          startTime: startSeconds,
+                                          endTime: endSeconds)
         case .ended, .cancelled:
-            self.delegate?.didFinishChangeValue(videoRangeSlider: self, startTime: startSeconds, endTime: endSeconds)
+            self.delegate?.didFinishChangeValue(videoRangeSlider: self,
+                                                startTime: startSeconds,
+                                                endTime: endSeconds)
             UIView.animate(withDuration: 0.3, animations: {
                 self.startTimeView.alpha = 0
             }, completion: { _ in
@@ -545,6 +557,20 @@ public class ABVideoRangeSlider: UIView {
 
         layoutSubviews()
     }
+    
+    func viewTapped(recognizer: UITapGestureRecognizer){
+        let progressPosition = recognizer.location(in: self).x
+        progressIndicator.center = CGPoint(x: progressPosition , y: progressIndicator.center.y)
+        
+        let progressPercentage = progressIndicator.center.x * 100 / self.frame.width
+        if self.progressPercentage != progressPercentage {
+            let progressSeconds = secondsFromValue(value: progressPercentage)
+            self.delegate?.indicatorDidFinishChangePosition(videoRangeSlider: self, position: progressSeconds)
+        }
+        self.progressPercentage = progressPercentage
+
+        layoutSubviews()
+    }
 
     private func secondsFromValue(value: CGFloat) -> Float64{
         return duration * Float64((value / 100))
@@ -570,9 +596,12 @@ public class ABVideoRangeSlider: UIView {
         endIndicator.center = CGPoint(x: endPosition, y: endIndicator.center.y)
         progressIndicator.center = CGPoint(x: progressPosition, y: progressIndicator.center.y)
         
-        draggableView.frame = CGRect(x: startIndicator.frame.origin.x + startIndicator.frame.size.width,
+        draggableView.frame = CGRect(x: startIndicator.frame.origin.x +
+                                        startIndicator.frame.size.width,
                                      y: 0,
-                                     width: endIndicator.frame.origin.x - startIndicator.frame.origin.x - endIndicator.frame.size.width,
+                                     width: endIndicator.frame.origin.x -
+                                            startIndicator.frame.origin.x -
+                                            endIndicator.frame.size.width,
                                      height: self.frame.height)
 
 
@@ -585,7 +614,7 @@ public class ABVideoRangeSlider: UIView {
                                height: topBorderHeight)
 
         bottomLine.frame = CGRect(x: startIndicator.frame.origin.x +
-            startIndicator.frame.width,
+                                     startIndicator.frame.width,
                                   y: self.frame.size.height,
                                   width: endIndicator.frame.origin.x -
                                          startIndicator.frame.origin.x -
@@ -603,16 +632,22 @@ public class ABVideoRangeSlider: UIView {
                                    height: self.frame.height)
         
         // Update time view
-        startTimeView.center = CGPoint(x: startIndicator.center.x, y: startTimeView.center.y)
-        endTimeView.center = CGPoint(x: endIndicator.center.x, y: endTimeView.center.y)
+        startTimeView.center = CGPoint(x: startIndicator.center.x,
+                                       y: startTimeView.center.y)
+        endTimeView.center = CGPoint(x: endIndicator.center.x,
+                                     y: endTimeView.center.y)
     }
 
 
     override public func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         let extendedBounds = CGRect(x: -startIndicator.frame.size.width,
                                     y: -topLine.frame.size.height,
-                                    width: self.frame.size.width + startIndicator.frame.size.width + endIndicator.frame.size.width,
-                                    height: self.frame.size.height + topLine.frame.size.height + bottomLine.frame.size.height)
+                                    width: self.frame.size.width +
+                                           startIndicator.frame.size.width +
+                                           endIndicator.frame.size.width,
+                                    height: self.frame.size.height +
+                                            topLine.frame.size.height +
+                                            bottomLine.frame.size.height)
         return extendedBounds.contains(point)
     }
 
