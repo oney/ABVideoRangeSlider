@@ -149,14 +149,15 @@ public class ABVideoRangeSlider: UIView {
         draggableView.addGestureRecognizer(viewDrag)
         viewDrag.delegate = self
         
-        let viewTap = UITapGestureRecognizer(target:self,
-                                             action: #selector(viewTapped(recognizer:)))
-        draggableView.addGestureRecognizer(viewTap)
-        viewTap.delegate = self
         
         self.draggableView.backgroundColor = .clear
         self.addSubview(draggableView)
         self.sendSubview(toBack: draggableView)
+        
+        let viewTap = UITapGestureRecognizer(target:self,
+                                             action: #selector(viewTapped(recognizer:)))
+        self.addGestureRecognizer(viewTap)
+        viewTap.delegate = self
 
         // Setup time labels
 
@@ -559,9 +560,14 @@ public class ABVideoRangeSlider: UIView {
     }
     
     func viewTapped(recognizer: UITapGestureRecognizer){
-        let progressPosition = recognizer.location(in: self).x
-        progressIndicator.center = CGPoint(x: progressPosition , y: progressIndicator.center.y)
+        let location = recognizer.location(in: self)
+
+        guard draggableView.frame.contains(location) else {
+            return
+        }
         
+        progressIndicator.center = CGPoint(x: location.x , y: progressIndicator.center.y)
+
         let progressPercentage = progressIndicator.center.x * 100 / self.frame.width
         if self.progressPercentage != progressPercentage {
             let progressSeconds = secondsFromValue(value: progressPercentage)
