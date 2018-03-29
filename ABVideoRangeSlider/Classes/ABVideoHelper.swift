@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 class ABVideoHelper: NSObject {
-
+    
     static func thumbnailFromVideo(videoUrl: URL, time: CMTime) -> UIImage{
         let asset: AVAsset = AVAsset(url: videoUrl) as AVAsset
         let imgGenerator = AVAssetImageGenerator(asset: asset)
@@ -30,4 +30,20 @@ class ABVideoHelper: NSObject {
         return CMTimeGetSeconds(source.duration)
     }
     
+    static func thumbnailFromVideo(asset: AVAsset, time: CMTime) -> UIImage{
+        let imgGenerator = AVAssetImageGenerator(asset: asset)
+        imgGenerator.appliesPreferredTrackTransform = true
+        do{
+            let cgImage = try imgGenerator.copyCGImage(at: time, actualTime: nil)
+            let uiImage = UIImage(cgImage: cgImage)
+            return uiImage
+        }catch{
+            
+        }
+        return UIImage()
+    }
+    
+    static func videoDuration(asset: AVURLAsset) -> Float64 {
+        return CMTimeGetSeconds(asset.duration)
+    }
 }

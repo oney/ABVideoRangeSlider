@@ -73,4 +73,26 @@ class ABThumbnailsManager: NSObject {
         self.addImagesToView(images: thumbnails, view: view)
         return self.thumbnailViews
     }
+    
+    func updateThumbnails(view: UIView, asset: AVAsset, duration: Float64) -> [UIImageView]{
+        
+        for view in self.thumbnailViews{
+            DispatchQueue.main.async {
+                view.removeFromSuperview()
+            }
+        }
+        
+        var thumbnails = [UIImage]()
+        var offset: Float64 = 0
+        let imagesCount = self.thumbnailCount(inView: view)
+        
+        for i in 0..<imagesCount{
+            let thumbnail = ABVideoHelper.thumbnailFromVideo(asset: asset,
+                                                             time: CMTimeMake(Int64(offset), 1))
+            offset = Float64(i) * (duration / Float64(imagesCount))
+            thumbnails.append(thumbnail)
+        }
+        self.addImagesToView(images: thumbnails, view: view)
+        return self.thumbnailViews
+    }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 public protocol ABVideoRangeSliderDelegate: class {
     func didChangeValue(videoRangeSlider: ABVideoRangeSlider, startTime: Float64, endTime: Float64)
@@ -34,6 +35,7 @@ public class ABVideoRangeSlider: UIView {
     let thumbnailsManager   = ABThumbnailsManager()
     var duration: Float64   = 0.0
     var videoURL            = URL(fileURLWithPath: "")
+    weak var asset: AVURLAsset?
 
     var progressPercentage: CGFloat = 0         // Represented in percentage
     var startPercentage: CGFloat    = 0         // Represented in percentage
@@ -258,6 +260,14 @@ public class ABVideoRangeSlider: UIView {
         }
     }
 
+    public func setVideoAsset(asset: AVURLAsset){
+        self.duration = ABVideoHelper.videoDuration(asset: asset)
+        self.asset = asset
+        self.videoURL = asset.url
+        self.superview?.layoutSubviews()
+        self.updateThumbnails()
+    }
+
     public func setVideoURL(videoURL: URL){
         self.duration = ABVideoHelper.videoDuration(videoURL: videoURL)
         self.videoURL = videoURL
@@ -272,9 +282,16 @@ public class ABVideoRangeSlider: UIView {
                                                 qos: .background,
                                                 target: nil)
             backgroundQueue.async {
-                self.thumbnailsManager.updateThumbnails(view: self,
-                                                        videoURL: self.videoURL,
-                                                        duration: self.duration)
+                if let asset = self.asset {
+                    self.thumbnailsManager.updateThumbnails(view: self,
+                                                            asset: asset,
+                                                            duration: self.duration)
+                } else {
+                    self.thumbnailsManager.updateThumbnails(view: self,
+                                                            videoURL: self.videoURL,
+                                                            duration: self.duration)
+                }
+                
                 self.isUpdatingThumbnails = false
             }
         }
