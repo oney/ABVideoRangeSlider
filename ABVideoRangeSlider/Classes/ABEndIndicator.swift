@@ -31,7 +31,7 @@ class ABEndIndicator: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        adjustAlignment()
+//        adjustAlignment()
     }
     
     func adjustAlignment() {

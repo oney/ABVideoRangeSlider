@@ -14,13 +14,19 @@ class ABProgressIndicator: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        /*
         let bundle = Bundle(for: ABStartIndicator.self)
-//        let image = UIImage(named: "ProgressIndicator", in: bundle, compatibleWith: nil)
+        let image = UIImage(named: "ProgressIndicator", in: bundle, compatibleWith: nil)
         imageView.frame = self.bounds
-//        imageView.image = image
+        imageView.image = image
         imageView.contentMode = UIViewContentMode.scaleToFill
         self.addSubview(imageView)
+         */
+        layer.cornerRadius = 15.0
+        layer.masksToBounds = true
+        layer.borderWidth = 5.0
+        layer.borderColor = UIColor.white.cgColor
+        backgroundColor = .clear
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -29,8 +35,8 @@ class ABProgressIndicator: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        adjustAlignment()
+        imageView.frame = self.bounds
+//        adjustAlignment()
     }
     
     func adjustAlignment() {

@@ -28,6 +28,7 @@ public class ABVideoRangeSlider: UIView {
     var draggableView       = UIView()
     var leftDimView         = ABDimView()
     var rightDimView        = ABDimView()
+    var thumbnailsContainer = UIView()
 
     public var startTimeView       = ABTimeView()
     public var endTimeView         = ABTimeView()
@@ -41,11 +42,11 @@ public class ABVideoRangeSlider: UIView {
     var startPercentage: CGFloat    = 0         // Represented in percentage
     var endPercentage: CGFloat      = 100       // Represented in percentage
 
-    var topBorderHeight: CGFloat      = 0
-    var bottomBorderHeight: CGFloat   = 0
+    let topBorderHeight: CGFloat      = 5
+    let bottomBorderHeight: CGFloat   = 5
 
     let indicatorWidth: CGFloat = 20.0
-    let progressWidth: CGFloat = 10.0
+    let progressWidth: CGFloat = 70.0
 
     public var minSpace: Float = 1              // In Seconds
     public var maxSpace: Float = 0              // In Seconds
@@ -76,11 +77,25 @@ public class ABVideoRangeSlider: UIView {
         self.isUserInteractionEnabled = true
 
         // Setup left DimView
+        thumbnailsContainer = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: self.frame.size.height))
+        thumbnailsContainer.layer.cornerRadius = 10.0
+        thumbnailsContainer.layer.masksToBounds = true
+        thumbnailsContainer.clipsToBounds = true
+        self.addSubview(thumbnailsContainer)
+        
         leftDimView = ABDimView(frame: CGRect(x: 0, y: 0, width: 0, height: self.frame.size.height))
+        if #available(iOS 11.0, *) {
+            leftDimView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        }
+//        leftDimView.roundCorners([.topLeft, .bottomLeft], radius: 6)
         self.addSubview(leftDimView)
         
         // Setup riht DimView
         rightDimView = ABDimView(frame: CGRect(x: 0, y: 0, width: 0, height: self.frame.size.height))
+        if #available(iOS 11.0, *) {
+            rightDimView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        }
+//        rightDimView.roundCorners([.topRight, .bottomRight], radius: 6)
         self.addSubview(rightDimView)
         
         // Setup Start Indicator
@@ -166,13 +181,13 @@ public class ABVideoRangeSlider: UIView {
         startTimeView = ABTimeView(size: CGSize(width: 60, height: 30),
                                    position: 1)
         startTimeView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        startTimeView.alpha = 0
+//        startTimeView.alpha = 0
         self.addSubview(startTimeView)
 
         endTimeView = ABTimeView(size: CGSize(width: 60, height: 30),
                                  position: 1)
         endTimeView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        endTimeView.alpha = 0
+//        endTimeView.alpha = 0
         self.addSubview(endTimeView)
     }
 
@@ -281,13 +296,15 @@ public class ABVideoRangeSlider: UIView {
             let backgroundQueue = DispatchQueue(label: "com.app.queue",
                                                 qos: .background,
                                                 target: nil)
+            
+            thumbnailsContainer.frame = CGRect(x: -10, y: 0, width: frame.size.width + 20, height: frame.size.height)
             backgroundQueue.async {
                 if let asset = self.asset {
-                    self.thumbnailsManager.updateThumbnails(view: self,
+                    self.thumbnailsManager.updateThumbnails(view: self.thumbnailsContainer,
                                                             asset: asset,
                                                             duration: self.duration)
                 } else {
-                    self.thumbnailsManager.updateThumbnails(view: self,
+                    self.thumbnailsManager.updateThumbnails(view: self.thumbnailsContainer,
                                                             videoURL: self.videoURL,
                                                             duration: self.duration)
                 }
@@ -316,6 +333,14 @@ public class ABVideoRangeSlider: UIView {
         return position
     }
 
+    private func progressIndicatorAdjustX(_ x: CGFloat) -> CGFloat {
+        let start = startIndicator.center.x
+        let end = endIndicator.center.x
+        let w = end - start
+        let padding: CGFloat = 20.0
+        return start + padding + (x-start)/w*(w-2*padding)
+    }
+    
     func startDragged(recognizer: UIPanGestureRecognizer){
         
         let translation = recognizer.translation(in: self)
@@ -355,11 +380,11 @@ public class ABVideoRangeSlider: UIView {
 
 
         recognizer.setTranslation(CGPoint.zero, in: self)
-        progressIndicator.center = CGPoint(x: progressPosition , y: progressIndicator.center.y)
+        progressIndicator.center = CGPoint(x: progressIndicatorAdjustX(progressPosition) , y: progressIndicator.center.y)
         startIndicator.center = CGPoint(x: position , y: startIndicator.center.y)
 
         let percentage = startIndicator.center.x * 100 / self.frame.width
-        let progressPercentage = progressIndicator.center.x * 100 / self.frame.width
+        let progressPercentage = progressPosition * 100 / self.frame.width
 
         let startSeconds = secondsFromValue(value: startPercentage)
         let endSeconds = secondsFromValue(value: endPercentage)
@@ -434,11 +459,11 @@ public class ABVideoRangeSlider: UIView {
         }
 
         recognizer.setTranslation(CGPoint.zero, in: self)
-        progressIndicator.center = CGPoint(x: progressPosition , y: progressIndicator.center.y)
+        progressIndicator.center = CGPoint(x: progressIndicatorAdjustX(progressPosition) , y: progressIndicator.center.y)
         endIndicator.center = CGPoint(x: position , y: endIndicator.center.y)
 
         let percentage = endIndicator.center.x * 100 / self.frame.width
-        let progressPercentage = progressIndicator.center.x * 100 / self.frame.width
+        let progressPercentage = progressPosition * 100 / self.frame.width
 
         let startSeconds = secondsFromValue(value: startPercentage)
         let endSeconds = secondsFromValue(value: endPercentage)
@@ -489,9 +514,9 @@ public class ABVideoRangeSlider: UIView {
 
         recognizer.setTranslation(CGPoint.zero, in: self)
 
-        progressIndicator.center = CGPoint(x: position , y: progressIndicator.center.y)
+        progressIndicator.center = CGPoint(x: progressIndicatorAdjustX(position) , y: progressIndicator.center.y)
 
-        let percentage = progressIndicator.center.x * 100 / self.frame.width
+        let percentage = position * 100 / self.frame.width
 
         let progressSeconds = secondsFromValue(value: progressPercentage)
 
@@ -535,13 +560,13 @@ public class ABVideoRangeSlider: UIView {
 
         recognizer.setTranslation(CGPoint.zero, in: self)
 
-        progressIndicator.center = CGPoint(x: progressPosition , y: progressIndicator.center.y)
+        progressIndicator.center = CGPoint(x: progressIndicatorAdjustX(progressPosition) , y: progressIndicator.center.y)
         startIndicator.center = CGPoint(x: startPosition , y: startIndicator.center.y)
         endIndicator.center = CGPoint(x: endPosition , y: endIndicator.center.y)
 
         let startPercentage = startIndicator.center.x * 100 / self.frame.width
         let endPercentage = endIndicator.center.x * 100 / self.frame.width
-        let progressPercentage = progressIndicator.center.x * 100 / self.frame.width
+        let progressPercentage = progressPosition * 100 / self.frame.width
 
         let startSeconds = secondsFromValue(value: startPercentage)
         let endSeconds = secondsFromValue(value: endPercentage)
@@ -583,9 +608,9 @@ public class ABVideoRangeSlider: UIView {
             return
         }
         
-        progressIndicator.center = CGPoint(x: location.x , y: progressIndicator.center.y)
+        progressIndicator.center = CGPoint(x: progressIndicatorAdjustX(location.x) , y: progressIndicator.center.y)
 
-        let progressPercentage = progressIndicator.center.x * 100 / self.frame.width
+        let progressPercentage = location.x * 100 / self.frame.width
         if self.progressPercentage != progressPercentage {
             let progressSeconds = secondsFromValue(value: progressPercentage)
             self.delegate?.indicatorDidFinishChangePosition(videoRangeSlider: self, position: progressSeconds)
@@ -617,7 +642,7 @@ public class ABVideoRangeSlider: UIView {
 
         startIndicator.center = CGPoint(x: startPosition, y: startIndicator.center.y)
         endIndicator.center = CGPoint(x: endPosition, y: endIndicator.center.y)
-        progressIndicator.center = CGPoint(x: progressPosition, y: progressIndicator.center.y)
+        progressIndicator.center = CGPoint(x: progressIndicatorAdjustX(progressPosition), y: progressIndicator.center.y)
         
         draggableView.frame = CGRect(x: startIndicator.frame.origin.x +
                                         startIndicator.frame.size.width,
@@ -644,12 +669,12 @@ public class ABVideoRangeSlider: UIView {
                                          endIndicator.frame.size.width,
                                   height: bottomBorderHeight)
 
-        leftDimView.frame = CGRect(x: 0,
+        leftDimView.frame = CGRect(x: -10,
                                    y: 0,
                                    width: startIndicator.frame.origin.x + startIndicator.frame.size.width,
                                    height: self.frame.height)
         
-        rightDimView.frame = CGRect(x: endIndicator.frame.origin.x,
+        rightDimView.frame = CGRect(x: endIndicator.frame.origin.x + 10,
                                    y: 0,
                                    width: self.frame.width - endIndicator.frame.origin.x,
                                    height: self.frame.height)

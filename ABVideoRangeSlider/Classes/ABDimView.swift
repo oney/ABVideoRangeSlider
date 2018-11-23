@@ -13,6 +13,9 @@ class ABDimView: UIView {
         self.isUserInteractionEnabled = false
         
         self.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        layer.cornerRadius = 10.0
+//        layer.masksToBounds = true
+        clipsToBounds = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -25,5 +28,10 @@ class ABDimView: UIView {
         // Drawing code
     }
     */
-
+    func roundCorners(_ corners: UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        self.layer.mask = mask
+    }
 }
