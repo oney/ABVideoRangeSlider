@@ -42,8 +42,8 @@ public class ABVideoRangeSlider: UIView {
     var startPercentage: CGFloat    = 0         // Represented in percentage
     var endPercentage: CGFloat      = 100       // Represented in percentage
 
-    let topBorderHeight: CGFloat      = 5
-    let bottomBorderHeight: CGFloat   = 5
+    let topBorderHeight: CGFloat      = 4
+    let bottomBorderHeight: CGFloat   = 4
 
     let indicatorWidth: CGFloat = 20.0
     let progressWidth: CGFloat = 70.0
